@@ -1,6 +1,7 @@
 package org.moy.spring.dubbo.consumer;
 
 import org.moy.spring.dubbo.api.HelloWorldService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
@@ -21,9 +22,11 @@ import javax.annotation.Resource;
  */
 @SpringBootApplication
 @RestController
-@ImportResource(locations = {"classpath:dubbo/spring-dubbo.xml", "classpath:dubbo/spring-dubbo-consumer.xml"})
+@ImportResource(locations = {"classpath:dubbo/spring*.xml"})
 public class DubboConsumerApplication {
 
+    @Value("${dubbo.application.name}")
+    private String serviceName;
 
     @Resource
     private HelloWorldService helloWorldService;
@@ -33,6 +36,11 @@ public class DubboConsumerApplication {
     }
 
     @RequestMapping("/")
+    public String index() {
+        return String.format("%s is ok!", serviceName);
+    }
+
+    @RequestMapping("/hello")
     public String sayHelloWorld() {
         return helloWorldService.sayHelloWorld();
     }

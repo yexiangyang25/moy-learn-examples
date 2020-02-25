@@ -12,7 +12,7 @@
     <dubbo:registry protocol="${dubbo.registry.protocol}"
                     address="${dubbo.registry.address}"
                     timeout="${dubbo.registry.timeout}"
-                    client="${dubbo.registry.client}"/>
+                    />
 
     <!-- dubbo协议 -->
     <dubbo:protocol name="${dubbo.protocol.name}"

@@ -14,15 +14,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HelloWorldServiceImpl implements HelloWorldService {
-    /**
-     * The default value of ${dubbo.application.name} is ${spring.application.name}
-     */
-    @Value("${dubbo.application.name}")
-    private String serviceName;
 
     @Override
     public String sayHi(String name) {
-        return String.format("[%s] : Hello, %s", serviceName, name);
+        return String.format("Hi, %s", name);
     }
 
     @Override

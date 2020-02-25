@@ -11,8 +11,7 @@
     <!-- 注册中心服务地址 -->
     <dubbo:registry protocol="${dubbo.registry.protocol}"
                     address="${dubbo.registry.address}"
-                    timeout="${dubbo.registry.timeout}"
-                    client="${dubbo.registry.client}"/>
+                    timeout="${dubbo.registry.timeout}"/>
 
     <!-- dubbo协议 -->
     <dubbo:protocol name="${dubbo.protocol.name}"
