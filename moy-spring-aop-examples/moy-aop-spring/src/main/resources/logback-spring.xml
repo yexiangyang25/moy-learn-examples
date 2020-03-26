@@ -1,0 +1,43 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!--引用Spring配置属性-->
+    <springProperty scope="context" name="app.log.path" source="app.log.path"/>
+    <springProperty scope="context" name="app.log.elk.filename" source="app.log.elk.filename"/>
+    <springProperty scope="context" name="app.log.filename" source="app.log.filename"/>
+
+    <appender name="ELK_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${app.log.path}/elk/${app.log.elk.filename}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${app.log.path}/elk/backup/${app.log.elk.filename}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.moy.spring.aop.log.config.util.LogCollect" level="info" additivity="false">
+        <appender-ref ref="ELK_FILE"/>
+    </logger>
+
+    <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--使用spring 默认模板  org/springframework/boot/logging/logback/base.xml -->
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${app.log.path}/${app.log.filename}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${app.log.path}/backup/${app.log.filename}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="${logging.level.root}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="APP_FILE"/>
+    </root>
+</configuration>
