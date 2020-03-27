@@ -1,20 +1,21 @@
 package org.moy.spring.aop.log.config;
 
+
 /**
- * <p>Description: [根据异常转化指定结果]</p>
+ * <p>Description: [处理 日志]</p>
  * Created on 2020/03/25
  *
  * @author <a href="mailto: moy25@foxmail.com">叶向阳</a>
  * @version 1.0
  * Copyright (c) 2018 墨阳
  */
-public interface ExceptionToResult {
+public interface LogHandler {
+
 
     /**
-     * 自定义出现异常转化结果
+     * 处理
      *
-     * @param e
-     * @return
+     * @param appLog
      */
-    Object format(Throwable e);
+    void handle(AppLog appLog);
 }

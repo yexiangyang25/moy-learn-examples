@@ -1,4 +1,4 @@
-package org.moy.spring.aop.controller;
+package org.moy.spring.aop.dto;
 
 
 /**
@@ -11,8 +11,16 @@ package org.moy.spring.aop.controller;
  */
 public class Demo1 {
 
-    private boolean isOk = true;
 
+    private boolean isOk = true;
+    private Long id;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     public boolean isOk() {
         return isOk;
     }

@@ -18,7 +18,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="org.moy.spring.aop.log.config.util.LogCollect" level="info" additivity="false">
+    <logger name="org.moy.spring.aop.log.config.util.DefaultLogHandler" level="info" additivity="false">
         <appender-ref ref="ELK_FILE"/>
     </logger>
 

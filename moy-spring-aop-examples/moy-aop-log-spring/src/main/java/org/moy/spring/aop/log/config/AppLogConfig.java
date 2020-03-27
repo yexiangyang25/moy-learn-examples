@@ -44,12 +44,18 @@ public @interface AppLogConfig {
     boolean resultPrint() default true;
 
     /**
-     * 出现异常堆栈转化成结果
-     * 方法返回值需要实现接口
+     * 指定出现异常堆栈转化成结果,前提方法返回值需要实现接口
      *
      * @see ExceptionToResult
      */
-    boolean needFormatExceptionToResult() default true;
+    boolean formatException() default true;
+
+    /**
+     * 出现异常,如果是http请求，设置响应码500
+     *
+     * @return
+     */
+    boolean setInternalServerError() default true;
 
 
     /**

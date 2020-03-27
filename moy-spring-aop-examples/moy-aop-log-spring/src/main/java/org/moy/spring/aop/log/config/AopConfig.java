@@ -2,7 +2,7 @@ package org.moy.spring.aop.log.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.moy.spring.aop.log.config.util.ServletHelper;
+import org.moy.spring.aop.log.config.util.DefaultLogHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +23,14 @@ public class AopConfig {
     private long timeout = 3000;
     @Value("${api.timeoutWarn:true}")
     private boolean timeoutWarn = true;
+    /**
+     * 默认输入日志，可自定义
+     */
+    private LogHandler logHandler = new DefaultLogHandler();
+
+    public void setLogHandler(LogHandler logHandler) {
+        this.logHandler = logHandler;
+    }
 
     /**
      * 表达式配置
@@ -48,15 +56,15 @@ public class AopConfig {
             result = point.proceed();
         } catch (Throwable ex) {
             logger.error("[异常方法签名]: " + point.getSignature(), ex);
-            ServletHelper.setInternalServerError();
             appLog.buildAfterThrowing(ex);
-            if (AppLog.needFormatExceptionToResult(point, config)) {
+            if (AppLog.needFormatException(point, config)) {
                 result = appLog.formatExceptionToResult(point, ex);
             } else {
                 throw ex;
             }
         } finally {
             appLog.buildAfter(result, config);
+            logHandler.handle(appLog);
             if (timeoutWarn && appLog.getExecTime() > timeout) {
                 logger.warn("[方法签名]: {} [执行耗时]: {}ms", point.getSignature(), appLog.getExecTime());
             }

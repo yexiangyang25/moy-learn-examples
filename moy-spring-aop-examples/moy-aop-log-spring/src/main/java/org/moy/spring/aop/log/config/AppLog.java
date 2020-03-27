@@ -6,7 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.moy.spring.aop.log.config.util.LogCollect;
+import org.moy.spring.aop.log.config.util.JsonHelper;
 import org.moy.spring.aop.log.config.util.ReflectHelper;
 import org.moy.spring.aop.log.config.util.ServletHelper;
 import org.slf4j.Logger;
@@ -216,14 +216,14 @@ public class AppLog implements Serializable {
         // 没有自定义注解配置 默认
         if (null == appLogConfig) {
             appLog.setArgs(joinPoint.getArgs());
-            appLog.setArgsJsonString(toJsonString(joinPoint.getArgs()));
+            appLog.setArgsJsonString(JsonHelper.toJsonString(joinPoint.getArgs()));
         } else {
             boolean argsPrint = appLogConfig.argsPrint();
             boolean jsonFormat = appLogConfig.jsonFormat();
             if (argsPrint) {
                 appLog.setArgs(joinPoint.getArgs());
                 if (jsonFormat) {
-                    appLog.setArgsJsonString(toJsonString(joinPoint.getArgs()));
+                    appLog.setArgsJsonString(JsonHelper.toJsonString(joinPoint.getArgs()));
                 }
             }
             // 自定义配置则使用配置项
@@ -244,16 +244,6 @@ public class AppLog implements Serializable {
         return appLog;
     }
 
-    /**
-     * JSON格式化输出
-     *
-     * @param o
-     * @return
-     */
-    private static String toJsonString(Object o) {
-        return JSON.toJSONString(o, SerializerFeature.WriteMapNullValue);
-    }
-
 
     /**
      * 方法执行之后
@@ -265,19 +255,18 @@ public class AppLog implements Serializable {
         this.execTime = System.currentTimeMillis() - this.beginTime;
         if (null == appLogConfig) {
             this.result = result;
-            this.resultJsonString = toJsonString(result);
+            this.resultJsonString = JsonHelper.toJsonString(result);
         } else {
             boolean resultPrint = appLogConfig.resultPrint();
             boolean jsonFormat = appLogConfig.jsonFormat();
             if (resultPrint) {
                 this.result = result;
                 if (jsonFormat) {
-                    this.resultJsonString = toJsonString(result);
+                    this.resultJsonString = JsonHelper.toJsonString(result);
                 }
             }
         }
-        // 收集日志
-        LogCollect.collect(toJsonString(this));
+
     }
 
     /**
@@ -287,9 +276,13 @@ public class AppLog implements Serializable {
      * @param appLogConfig
      * @return
      */
-    public static boolean needFormatExceptionToResult(ProceedingJoinPoint joinPoint, AppLogConfig appLogConfig) {
-        // 1.开关不配置 或者设置配置向为true
-        if (null == appLogConfig || appLogConfig.needFormatExceptionToResult()) {
+    public static boolean needFormatException(ProceedingJoinPoint joinPoint, AppLogConfig appLogConfig) {
+        // 出现异常,如果是http请求，设置响应码500
+        if (null == appLogConfig || appLogConfig.setInternalServerError()) {
+            ServletHelper.setInternalServerError();
+        }
+        // 1.开关不配置 或者设置配置项为true
+        if (null == appLogConfig || appLogConfig.formatException()) {
             Signature signature = joinPoint.getSignature();
             if (signature instanceof MethodSignature) {
                 MethodSignature methodSignature = (MethodSignature) signature;
@@ -303,7 +296,7 @@ public class AppLog implements Serializable {
                 }
             }
         }
-        logger.info("方法签名:{} 没有配置异常转化", joinPoint.getSignature());
+        logger.debug("方法签名:{} 没有配置异常转化", joinPoint.getSignature());
         return false;
     }
 
@@ -325,22 +318,22 @@ public class AppLog implements Serializable {
                     ExceptionToResult exceptionToResult = (ExceptionToResult) o;
                     return exceptionToResult.format(throwable);
                 } else {
-                    printWarnInfo(signature);
+                    printInfo(signature);
                     throw throwable;
                 }
             } else {
-                printWarnInfo(signature);
+                printInfo(signature);
                 throw throwable;
             }
         } catch (Throwable e) {
             logger.error("[异常转化结果]失败,上抛出原本异常", e);
-            printWarnInfo(signature);
+            printInfo(signature);
             throw throwable;
         }
     }
 
-    private void printWarnInfo(MethodSignature signature) {
-        logger.warn("[异常转化结果]无法转化,方法签名:{},返回值类型:{},需要满足以下前提条件:{} {}"
+    private void printInfo(MethodSignature signature) {
+        logger.error("[异常转化结果]无法转化,方法签名:{},返回值类型:{},需要满足以下前提条件:{} {}"
                 , signature, signature.getReturnType()
                 , "1.[方法返回值类型]需要实现接口 " + ExceptionToResult.class.getName()
                 , "2.[方法返回值类型]需要提供无参构造器");
