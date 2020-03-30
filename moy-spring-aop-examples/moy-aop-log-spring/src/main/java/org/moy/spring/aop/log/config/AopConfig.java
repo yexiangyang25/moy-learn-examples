@@ -2,7 +2,8 @@ package org.moy.spring.aop.log.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.moy.spring.aop.log.config.util.DefaultLogHandler;
+import org.moy.spring.aop.log.config.util.DefaultMethodLogHandler;
+import org.moy.spring.aop.log.config.util.ReflectHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +27,10 @@ public class AopConfig {
     /**
      * 默认输入日志，可自定义
      */
-    private LogHandler logHandler = new DefaultLogHandler();
+    private MethodLogHandler methodLogHandler = new DefaultMethodLogHandler();
 
-    public void setLogHandler(LogHandler logHandler) {
-        this.logHandler = logHandler;
+    public void setMethodLogHandler(MethodLogHandler methodLogHandler) {
+        this.methodLogHandler = methodLogHandler;
     }
 
     /**
@@ -49,22 +50,16 @@ public class AopConfig {
 
     @Around(value = "annotationPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
-        AppLogConfig config = AppLog.getConfig(point);
-        AppLog appLog = AppLog.buildBefore(point, config);
+        AppLogConfig config = ReflectHelper.getAnnotationOfMethod(point, AppLogConfig.class);
+        final AppLog appLog = methodLogHandler.buildBefore(point, config);
         Object result = null;
         try {
             result = point.proceed();
         } catch (Throwable ex) {
             logger.error("[异常方法签名]: " + point.getSignature(), ex);
-            appLog.buildAfterThrowing(ex);
-            if (AppLog.needFormatException(point, config)) {
-                result = appLog.formatExceptionToResult(point, ex);
-            } else {
-                throw ex;
-            }
+            result = methodLogHandler.buildAfterThrowing(appLog, point, ex, config);
         } finally {
-            appLog.buildAfter(result, config);
-            logHandler.handle(appLog);
+            methodLogHandler.buildAfter(appLog, result, config);
             if (timeoutWarn && appLog.getExecTime() > timeout) {
                 logger.warn("[方法签名]: {} [执行耗时]: {}ms", point.getSignature(), appLog.getExecTime());
             }
