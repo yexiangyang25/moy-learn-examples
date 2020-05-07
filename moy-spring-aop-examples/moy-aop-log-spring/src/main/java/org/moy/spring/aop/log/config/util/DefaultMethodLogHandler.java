@@ -41,15 +41,19 @@ public class DefaultMethodLogHandler implements MethodLogHandler {
             appLog.setClassName(appLogConfig.className());
             appLog.setClassMethodName(appLogConfig.classMethodName());
             appLog.setUri(appLogConfig.uri());
+            appLog.setType(appLogConfig.type());
         }
         // 默认指定
-        if (Objects.equals(appLog.getUri(), "")) {
+        if (Objects.equals(appLog.getType(), AppLog.DEFAULT_EMPTY_VALUE)) {
+            appLog.setType(AppLog.DEFAULT_TYPE);
+        }
+        if (Objects.equals(appLog.getUri(), AppLog.DEFAULT_EMPTY_VALUE)) {
             appLog.setUri(ServletHelper.getRequestUri());
         }
-        if (Objects.equals(appLog.getClassName(), "")) {
-            appLog.setClassName(joinPoint.getSignature().getDeclaringType().getSimpleName());
+        if (Objects.equals(appLog.getClassName(), AppLog.DEFAULT_EMPTY_VALUE)) {
+            appLog.setClassName(joinPoint.getSignature().getDeclaringType().getName());
         }
-        if (Objects.equals(appLog.getClassMethodName(), "")) {
+        if (Objects.equals(appLog.getClassMethodName(), AppLog.DEFAULT_EMPTY_VALUE)) {
             appLog.setClassMethodName(joinPoint.getSignature().getName());
         }
         return appLog;
@@ -59,6 +63,10 @@ public class DefaultMethodLogHandler implements MethodLogHandler {
     public Object buildAfterThrowing(AppLog appLog, JoinPoint joinPoint, Throwable e, AppLogConfig appLogConfig) throws Throwable {
         appLog.setHasException(true);
         appLog.setExceptionStackTraceString(ReflectHelper.getStackTraceString(e));
+        // 出现异常,如果是http请求，设置响应码500
+        if (null == appLogConfig || appLogConfig.setInternalServerError()) {
+            ServletHelper.setInternalServerError();
+        }
         // 如果返回值实现了格式化异常接口,则使用接口返回结果替换异常
         if (AppLog.needFormatException(joinPoint, appLogConfig)) {
             Object result = AppLog.formatExceptionToResult(joinPoint, e);
@@ -72,7 +80,8 @@ public class DefaultMethodLogHandler implements MethodLogHandler {
 
     @Override
     public void buildAfter(AppLog appLog, Object result, AppLogConfig appLogConfig) {
-        appLog.setExecTime(System.currentTimeMillis() - appLog.getBeginTime());
+        appLog.setEndTime(System.currentTimeMillis());
+        appLog.setExecTime(appLog.getEndTime() - appLog.getBeginTime());
         if (null == appLogConfig) {
             appLog.setResult(result);
             appLog.setResultJsonString(JsonHelper.toJsonString(result));

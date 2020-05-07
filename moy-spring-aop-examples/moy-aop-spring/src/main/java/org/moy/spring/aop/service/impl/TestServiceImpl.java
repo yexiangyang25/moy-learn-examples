@@ -1,5 +1,6 @@
 package org.moy.spring.aop.service.impl;
 
+import org.moy.spring.aop.consts.LogType;
 import org.moy.spring.aop.dto.Demo1;
 import org.moy.spring.aop.dto.Demo2;
 import org.moy.spring.aop.log.config.AppLogConfig;
@@ -26,7 +27,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    @AppLogConfig
+    @AppLogConfig(type = LogType.SERVICE)
     public Demo2 getDemo2(Long id) {
         Demo2 demo2 = new Demo2();
         demo2.setId(id);
@@ -45,7 +46,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    @AppLogConfig
+    @AppLogConfig(type = LogType.SERVICE)
     public Demo1 getDemo1(Long id) {
         Demo1 demo1 = new Demo1();
         demo1.setId(id);

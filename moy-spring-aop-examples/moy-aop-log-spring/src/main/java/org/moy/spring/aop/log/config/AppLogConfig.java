@@ -63,14 +63,14 @@ public @interface AppLogConfig {
      *
      * @return
      */
-    String className() default "";
+    String className() default AppLog.DEFAULT_EMPTY_VALUE;
 
     /**
      * 自定义方法名称描述,不指定则默认使用执行方法的名称
      *
      * @return
      */
-    String classMethodName() default "";
+    String classMethodName() default AppLog.DEFAULT_EMPTY_VALUE;
 
 
     /**
@@ -78,5 +78,12 @@ public @interface AppLogConfig {
      *
      * @return
      */
-    String uri() default "";
+    String uri() default AppLog.DEFAULT_EMPTY_VALUE;
+
+    /**
+     * 类型
+     *
+     * @return
+     */
+    String type() default AppLog.DEFAULT_EMPTY_VALUE;
 }

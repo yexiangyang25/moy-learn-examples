@@ -22,8 +22,13 @@ import java.io.Serializable;
 public class AppLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static Logger logger = LoggerFactory.getLogger(AppLog.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(AppLog.class);
+    public static final String DEFAULT_EMPTY_VALUE = "";
+    public static final String DEFAULT_TYPE = "default";
+    /**
+     * 类型
+     */
+    private String type;
     /**
      * uri
      */
@@ -33,6 +38,10 @@ public class AppLog implements Serializable {
      * 开始时间
      */
     private Long beginTime;
+    /**
+     * 结束时间
+     */
+    private Long endTime;
     /**
      * 类名
      */
@@ -78,6 +87,22 @@ public class AppLog implements Serializable {
      * 异常堆栈字符串
      */
     private String exceptionStackTraceString;
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getUri() {
         return uri;
@@ -184,10 +209,6 @@ public class AppLog implements Serializable {
      * @return
      */
     public static boolean needFormatException(JoinPoint joinPoint, AppLogConfig appLogConfig) {
-        // 出现异常,如果是http请求，设置响应码500
-        if (null == appLogConfig || appLogConfig.setInternalServerError()) {
-            ServletHelper.setInternalServerError();
-        }
         // 1.开关不配置 或者设置配置项为true
         if (null == appLogConfig || appLogConfig.formatException()) {
             Signature signature = joinPoint.getSignature();

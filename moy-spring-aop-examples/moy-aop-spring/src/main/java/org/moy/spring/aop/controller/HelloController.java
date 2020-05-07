@@ -1,5 +1,6 @@
 package org.moy.spring.aop.controller;
 
+import org.moy.spring.aop.consts.LogType;
 import org.moy.spring.aop.dto.Demo1;
 import org.moy.spring.aop.dto.Demo2;
 import org.moy.spring.aop.dto.HttpResult;
@@ -24,14 +25,14 @@ public class HelloController {
     @Resource
     private TestService testService;
 
-    @AppLogConfig
+    @AppLogConfig(type = LogType.HTTP)
     @RequestMapping("/")
     public void helloWorld() {
         testService.sayHi("helloWorld");
     }
 
 
-    @AppLogConfig
+    @AppLogConfig(type = LogType.HTTP)
     @RequestMapping("/hi")
     public HttpResult<String> hi() {
         String world = testService.sayHi("world");
@@ -39,14 +40,14 @@ public class HelloController {
     }
 
 
-    @AppLogConfig
+    @AppLogConfig(type = LogType.HTTP)
     @RequestMapping("/demo1")
     public HttpResult<Demo1> demo1() {
         Demo1 demo1 = testService.getDemo1(1L);
         return HttpResult.success(demo1);
     }
 
-    @AppLogConfig
+    @AppLogConfig(type = LogType.HTTP)
     @RequestMapping("/demo2")
     public HttpResult<Demo2> demo2() {
         Demo2 demo2 = testService.getDemo2(2L);
@@ -54,7 +55,7 @@ public class HelloController {
     }
 
 
-    @AppLogConfig(formatException = false)
+    @AppLogConfig(type = LogType.HTTP, formatException = false)
     @RequestMapping("/demo21")
     public HttpResult<Demo2> demo21() {
         Demo2 demo2 = testService.getDemo2(21L);
