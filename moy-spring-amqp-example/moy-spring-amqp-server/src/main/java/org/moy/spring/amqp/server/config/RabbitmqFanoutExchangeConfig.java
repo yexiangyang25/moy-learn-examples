@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * <p>Description: [amqp配置]</p>
+ * <p>Description: [生产者创建绑定配置]</p>
  * Created on 2018/12/09
  *
  * @author <a href="mailto: moy25@foxmail.com">叶向阳</a>
