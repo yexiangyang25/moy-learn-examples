@@ -8,6 +8,7 @@
     <modules>
         <module>moy-spring-http-demo</module>
         <module>moy-http-client</module>
+        <module>moy-spring-captcha-demo</module>
     </modules>
     <packaging>pom</packaging>
 
