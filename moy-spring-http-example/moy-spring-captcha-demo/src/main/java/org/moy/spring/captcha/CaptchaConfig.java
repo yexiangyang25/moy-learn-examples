@@ -11,15 +11,18 @@ import java.util.Properties;
 @Configuration
 public class CaptchaConfig {
 
-
     @Bean
     public Producer defaultKaptcha() {
+        return getDefaultKaptcha();
+    }
+
+    private DefaultKaptcha getDefaultKaptcha() {
         Properties properties = new Properties();
         properties.put("kaptcha.session.key", "kaptcha.code");
         properties.put("kaptcha.border", "no");
         properties.put("kaptcha.textproducer.font.color", "black");
         // 渲染效果：水纹：WaterRipple；鱼眼：FishEyeGimpy；阴影：ShadowGimpy
-        properties.put("kaptcha.obscurificator.impl", "com.google.code.kaptcha.impl.WaterRipple");
+        properties.put("kaptcha.obscurificator.impl", "org.moy.spring.captcha.GimpyEngineImpl");
         properties.put("kaptcha.noise.impl", "com.google.code.kaptcha.impl.NoNoise");
         properties.put("kaptcha.image.width", "90");
         properties.put("kaptcha.image.height", "33");

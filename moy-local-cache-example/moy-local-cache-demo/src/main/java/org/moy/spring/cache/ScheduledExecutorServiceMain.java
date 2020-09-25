@@ -1,4 +1,4 @@
-package org.moy.spring.cache.client;
+package org.moy.spring.cache;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

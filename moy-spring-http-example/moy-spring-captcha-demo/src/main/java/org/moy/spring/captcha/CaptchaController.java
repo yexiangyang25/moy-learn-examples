@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,7 +27,6 @@ import java.io.IOException;
  * Copyright (c) 2019 丰益（上海）信息技术有限公司
  */
 @Controller
-@RequestMapping("/captcha")
 public class CaptchaController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaptchaController.class);
@@ -34,7 +34,8 @@ public class CaptchaController {
     @Autowired
     private Producer captchaProducer;
 
-    @RequestMapping(value = "/image", method = RequestMethod.GET)
+    @RequestMapping(value = "/captcha", method = RequestMethod.GET)
+    @ResponseBody
     public void image(@RequestParam String uid) throws IOException {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletResponse response = servletRequestAttributes.getResponse();
