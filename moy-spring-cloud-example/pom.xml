@@ -6,12 +6,12 @@
     <artifactId>moy-spring-cloud-example</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>moy-eureka-server</module>
-        <module>moy-eureka-client</module>
-        <module>moy-ribbon-consumer</module>
-        <module>moy-feign-consumer</module>
-        <module>moy-zuul-gateway</module>
-        <module>moy-common-sdk</module>
+        <module>moy-spring-cloud-eureka-server</module>
+        <module>moy-spring-cloud-eureka-client</module>
+        <module>moy-spring-cloud-ribbon-consumer</module>
+        <module>moy-spring-cloud-feign-consumer</module>
+        <module>moy-spring-cloud-zuul-gateway</module>
+        <module>moy-spring-cloud-common-sdk</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -29,30 +29,15 @@
 
         <lang3.version>3.6</lang3.version>
         <collections.version>4.1</collections.version>
-
-
-        <mybatis.boot.version>1.3.2</mybatis.boot.version>
-        <pagehelper.boot.version>1.2.7</pagehelper.boot.version>
-        <druid.boot.version>1.1.10</druid.boot.version>
-        <!-- 应用权限 相关属性 -->
-        <shiro.version>1.4.0</shiro.version>
-        <jwt.version>3.4.0</jwt.version>
-        <codec.version>1.11</codec.version>
-        <!-- 工具类 相关属性 -->
-        <swagger.version>2.9.2</swagger.version>
-
-        <commons-io.version>2.6</commons-io.version>
-        <kaptcha.version>0.0.9</kaptcha.version>
-        <spring.dubbo.version>0.2.0</spring.dubbo.version>
+        <commons-codec.version>1.11</commons-codec.version>
         <fastjson.version>1.2.59</fastjson.version>
-        <redisson.version>3.11.2</redisson.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.moy.spring</groupId>
-                <artifactId>moy-common-sdk</artifactId>
+                <artifactId>moy-spring-cloud-common-sdk</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
@@ -85,6 +70,11 @@
                 <artifactId>commons-collections4</artifactId>
                 <version>${collections.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -94,7 +84,6 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>2.1.6.RELEASE</version>
                     <executions>
                         <execution>
                             <goals>
@@ -106,7 +95,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
@@ -114,57 +102,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
 
-    <!-- 发布管理 需要在 maven settings.xml 文件添加
-    <servers>
-        <server>
-            <id>maven-releases</id>
-            <username>admin</username>
-            <password>admin123</password>
-        </server>
-        <server>
-            <id>maven-snapshots</id>
-            <username>admin</username>
-            <password>admin123</password>
-        </server>
-   </servers>-->
-
-    <!--发布管理-->
-    <!--<distributionManagement>-->
-    <!--<repository>-->
-    <!--<id>maven-releases</id>-->
-    <!--<name>Nexus ReleaseRepository</name>-->
-    <!--<url>http://localhost:8081/repository/maven-releases/</url>-->
-    <!--</repository>-->
-    <!--<snapshotRepository>-->
-    <!--<id>maven-snapshots</id>-->
-    <!--<name>Nexus SnapshotRepository</name>-->
-    <!--<url>http://localhost:8081/repository/maven-snapshots/</url>-->
-    <!--</snapshotRepository>-->
-    <!--</distributionManagement>-->
-
-    <!--使用仓库-->
-    <!--<repositories>-->
-    <!--<repository>-->
-    <!--<id>maven-releases</id>-->
-    <!--<name>Nexus ReleaseRepository</name>-->
-    <!--<url>http://localhost:8081/repository/maven-releases/</url>-->
-    <!--<releases><enabled>true</enabled></releases>-->
-    <!--<snapshots><enabled>false</enabled></snapshots>-->
-    <!--</repository>-->
-    <!--<repository>-->
-    <!--<id>maven-snapshots</id>-->
-    <!--<name>Nexus SnapshotRepository</name>-->
-    <!--<url>http://localhost:8081/repository/maven-snapshots/</url>-->
-    <!--<releases><enabled>false</enabled></releases>-->
-    <!--<snapshots><enabled>true</enabled></snapshots>-->
-    <!--</repository>-->
-    <!--</repositories>-->
 </project>

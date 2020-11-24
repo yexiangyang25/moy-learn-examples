@@ -3,15 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.moy.spring</groupId>
-    <artifactId>moy-spring-aop-example</artifactId>
+    <artifactId>moy-spring-cache-example</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>moy-spring-aop-log-util</module>
-        <module>moy-spring-aop-log</module>
+        <module>moy-spring-cache-local-demo</module>
+        <module>moy-spring-cache-demo</module>
     </modules>
     <packaging>pom</packaging>
 
-    <name>moy-spring-aop-example</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -19,36 +18,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <project.version>1.0-SNAPSHOT</project.version>
-        <!-- spring 相关属性 -->
-        <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
-
-        <lang3.version>3.6</lang3.version>
-        <fastjson.version>1.2.59</fastjson.version>
+        <spring-boot-starter-parent.version>2.0.5.RELEASE</spring-boot-starter-parent.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.moy.spring</groupId>
-                <artifactId>moy-spring-aop-log-util</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${lang3.version}</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>23.0</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring-boot-starter-parent.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>2.10.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -56,17 +46,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
