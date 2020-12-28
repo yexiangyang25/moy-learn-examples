@@ -3,14 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.moy.spring</groupId>
-    <artifactId>moy-spring-cache-example</artifactId>
+    <artifactId>moy-spring-redis-example</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>moy-spring-cache-local-demo</module>
-        <module>moy-spring-cache-demo</module>
+        <module>moy-spring-redis-demo</module>
     </modules>
     <packaging>pom</packaging>
 
+    <name>moy-spring-elasticsearch-example</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -18,26 +18,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <project.version>1.0-SNAPSHOT</project.version>
-        <spring-boot-starter-parent.version>2.0.5.RELEASE</spring-boot-starter-parent.version>
+        <!-- spring 相关属性 -->
+        <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>24.1.1-jre</version>            </dependency>
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring-boot-starter-parent.version}</version>
+                <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>2.10.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -45,6 +37,17 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
