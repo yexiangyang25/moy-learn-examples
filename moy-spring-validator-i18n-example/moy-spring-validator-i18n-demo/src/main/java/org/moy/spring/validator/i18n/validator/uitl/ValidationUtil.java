@@ -47,9 +47,9 @@ public class ValidationUtil {
      * @param propertyName 属性名称
      * @return ValidResult
      */
-    public static <T> ValidResult validateProperty(T obj, String propertyName) {
+    public static <T> ValidResult validateProperty(T obj, String propertyName, Class<?>... groups) {
         ValidResult result = new ValidResult();
-        Set<ConstraintViolation<T>> violationSet = validator.validateProperty(obj, propertyName);
+        Set<ConstraintViolation<T>> violationSet = validator.validateProperty(obj, propertyName, groups);
         boolean hasError = violationSet != null && violationSet.size() > 0;
         result.setHasErrors(hasError);
         if (hasError) {

@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.moy.spring</groupId>
-    <artifactId>moy-spring-redis-example</artifactId>
+    <artifactId>moy-spring-zookeeper-example</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>moy-spring-redis-demo</module>
+        <module>moy-spring-zookeeper-demo</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -19,6 +19,7 @@
         <project.version>1.0-SNAPSHOT</project.version>
         <!-- spring 相关属性 -->
         <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
+        <curator.version>4.3.0</curator.version>
     </properties>
 
     <dependencyManagement>
@@ -29,6 +30,16 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

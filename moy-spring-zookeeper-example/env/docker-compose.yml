@@ -1,0 +1,11 @@
+version: '3.0'
+services:
+  redis:
+    container_name: prod-redis
+    image: redis:4.0.8
+    ports:
+      - 6379:6379
+#    restart: always
+#    volumes:
+#      - /data/redis-data:/data
+    command: redis-server --appendonly yes --requirepass "233"
