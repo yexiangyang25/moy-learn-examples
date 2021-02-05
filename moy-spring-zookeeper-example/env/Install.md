@@ -21,7 +21,7 @@ sudo firewall-cmd --reload
 
 # 任意一台服务器 zk_node_1 进行操作
 # 选择安装包目录和下载指定版本
-mkdir -p /opt/apps &&  cd /opt/apps \
+mkdir -p /opt/packages &&  cd /opt/packages \
 && wget https://archive.apache.org/dist/zookeeper/zookeeper-3.5.7/apache-zookeeper-3.5.7-bin.tar.gz
 
 # 解压到指定目录
